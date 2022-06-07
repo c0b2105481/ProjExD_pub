@@ -56,6 +56,8 @@ class Bullet(pg.sprite.Sprite):                     # 障害物クラス
             BULLET = 500                             # BULLETを500に変更            　　武田
         elif key_states[pg.K_3]:                     # 3が押されたら                　　武田
             BULLET = 200                             # BULLETを200に変更            　　武田
+        elif key_states[pg.K_d]:                     # dが押されたら                    武田
+            BULLET = 1000                            # BULLETを初期値に戻す             武田
         
 
 class Cloud(pg.sprite.Sprite):                                  # 雲クラス
