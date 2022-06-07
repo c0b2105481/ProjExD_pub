@@ -1,3 +1,4 @@
+from glob import glob
 import pygame as pg
 import sys
 from random import randint 
@@ -6,6 +7,7 @@ BULLET_LIST = [1, 2, 3]         # 障害物の確率
 SCREEN = (0, 0, 600, 500)       # 移動範囲（x, y) 
 RUN = True                      # 実行：True 停止:False
 HP = 100                        # HPの設定
+BULLET = 1000                   # 乱数の範囲上限        武田
 
 class Screen:
     def __init__(self, fn, wh, title): 
@@ -45,8 +47,16 @@ class Bullet(pg.sprite.Sprite):                     # 障害物クラス
         self.rect.center = xy                       # 障害物の位置を設定
     
     def update(self):
-       self.rect.move_ip(-1, 0)                     # x-1の方向に動かし続ける
-
+        global BULLET
+        self.rect.move_ip(-1, 0)                     # x-1の方向に動かし続ける           武田
+        key_states = pg.key.get_pressed()            # 押されたキーをkey_statesに格納    武田
+        if key_states[pg.K_1]:                       # 1が押されたら                　　武田
+            BULLET = 800                             # BULLETを800に変更            　　武田
+        elif key_states[pg.K_2]:                     # 2が押されたら                　　武田
+            BULLET = 500                             # BULLETを500に変更            　　武田
+        elif key_states[pg.K_3]:                     # 3が押されたら                　　武田
+            BULLET = 200                             # BULLETを200に変更            　　武田
+        
 
 class Cloud(pg.sprite.Sprite):                                  # 雲クラス
     def __init__(self, fn, r, xy): 
@@ -100,8 +110,8 @@ def main():                                                       # main関数
         bullet.update()                                           # 障害物の更新
         if randint(0, 1500) == 1:                                 # 与えられた乱数がもし１だったら雲を追加
             cloud.add(Cloud("ProjExD_pub/dg/cloud4.jpg", 1, (randint(900, 1000), randint(0, 500))))
-        if randint(0, 1000) in BULLET_LIST:                       # 与えられた乱数がBULLET＿LISTのなかにあったら障害物を追加
-            bullet.add(Bullet("ProjExD_pub/dg/b1.png", 0.25, (randint(900, 1000), randint(0, 500))))
+        if randint(0, BULLET) in BULLET_LIST:                       # 与えられた乱数がBULLET＿LISTのなかにあったら障害物を追加      武田
+            bullet.add(Bullet("ProjExD_pub/dg/b1.png", 0.25, (900, randint(0, 500))))
         if len(pg.sprite.groupcollide(bullet, plane, True, False)) != 0: # 障害物と飛行機が当たったらHPを20減らし、HPが0になったら終了
             HP -= 20
             if HP == 0:

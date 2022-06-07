@@ -4,10 +4,18 @@ import tkinter as tk
 import tkinter.messagebox as tkm
 from random import randint 
 
-BULLET_LIST = [1, 2, 3]         # 障害物の確率
 SCREEN = (0, 0, 600, 500)       # 移動範囲（x, y) 
 RUN = True                      # 実行：True 停止:False
 HP = 100                        # HPの設定
+
+def making_list(level):
+    BULLET_LIST = []
+    if level == 1:
+        BULLET_LIST = [1]
+    elif level == 2:
+        BULLET_LIST = [3]
+    else:
+        BULLET_LIST = [5]
 
 class Screen:
     def __init__(self, fn, wh, title): 
@@ -78,8 +86,24 @@ class Hp: #Hp class
 
 def main():                                                       # main関数
     global BULLET_LIST, RUN, HP                                   # グローバル変数
+    root = tk.Tk()
+    root.wm_withdraw()
+    root.title("レベル選択")
+    root.geometry("450x250")
+    for num in (1, 2, 3):
+       btn = tk.Button(root, text=num, font=("Times New Roman", 30))
+       if num == 1:
+           btn.bind("<1>", making_list(1))
+           break
+       elif num == 2:
+           btn.bind("<1>", making_list(2))
+           break
+       else:
+            btn.bind("<1>", making_list(3))
+            break
+    root.mainloop()
     clock = pg.time.Clock()
-    screen = Screen("ProjExD_pub/dg/sky.jpg",(900,500),"避けろ！！こうかとん")  # 背景画像、ウィンドウサイズ、タイトル
+    screen = Screen("ProjExD_pub/dg/sky.jpg",(900,500),"Crash Plane")  # 背景画像、ウィンドウサイズ、タイトル 武田
     screen.disp.blit(screen.image, (0, 0))                        # 背景画像の貼り付け
     plane = pg.sprite.Group()                                     # 飛行機の空のコンテナを作成
     plane.add(Plane("ProjExD_pub/dg/plean3.png", 0.15, (200, 125)))           # 飛行機を画面に追加
