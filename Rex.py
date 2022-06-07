@@ -78,13 +78,15 @@ class Score:                                                   # Score classの�
     def __init__(self, fontsize):                              # font size　の　引数を設定
         self.font = pg.font.Font(None, fontsize)               # Surface
         self.score = pg.time.get_ticks()//1000                 # スコアの計算　1秒につき1増えるようにする
-        self.txt = self.font.render(str(f"Score:{self.score }"), True, (0, 0, 0)) # テキストの設定　（（テキスト）、Ture、（色RGB））
+        self.txt = self.font.render(str(f"Score:{self.score }"), True, (0, 0, 0)) 
+        # テキストの設定　（（テキスト）、Ture、（色RGB））
 
 
 class Hp: #Hp class
     global HP #グローバル変数
     def __init__(self, fontsize):                                       
-        self.font = pg.font.Font(None, fontsize)                            # HPの表示フォント、表示サイズの設定
+        self.font = pg.font.Font(None, fontsize)                            
+        # HPの表示フォント、表示サイズの設定
         self.txt = self.font.render(str(f"HP:{HP}"), True, (0, 0, 0))       # HP文字列の描画
 
 def main():                                                       # main関数
@@ -117,9 +119,12 @@ def main():                                                       # main関数
         bullet.update()                                           # 障害物の更新
         if randint(0, 1500) == 1:                                 # 与えられた乱数がもし１だったら雲を追加
             cloud.add(Cloud("dg/cloud4.jpg", 1, (randint(900, 1000), randint(0, 500))))
-        if randint(0, BULLET) in BULLET_LIST:                       # 与えられた乱数がBULLET＿LISTのなかにあったら障害物を追加      武田
-            bullet.add(Bullet("dg/b1.png", 0.25, (900, randint(0, 500)), (randint(-7, -1), randint(-1, 1)))) #弾の速度、方向をランダムに設定　髙山
-        if len(pg.sprite.groupcollide(bullet, plane, True, False)) != 0: # 障害物と飛行機が当たったらHPを20減らし、HPが0になったら終了
+        if randint(0, BULLET) in BULLET_LIST:                       
+            # 与えられた乱数がBULLET＿LISTのなかにあったら障害物を追加      武田
+            bullet.add(Bullet("dg/b1.png", 0.25, (900, randint(0, 500)), (randint(-7, -1), randint(-1, 1)))) 
+            #弾の速度、方向をランダムに設定　髙山
+        if len(pg.sprite.groupcollide(bullet, plane, True, False)) != 0: 
+            # 障害物と飛行機が当たったらHPを20減らし、HPが0になったら終了
             HP -= 20
             if HP == 0:
                 RUN = False
