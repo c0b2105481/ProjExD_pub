@@ -35,7 +35,8 @@ class Plane(pg.sprite.Sprite):            #キャラクタークラス
             self.rect.move_ip(0, 1)
         self.rect.clamp_ip(SCREEN)        #キャラの移動範囲
 
-   
+
+
 class Bullet(pg.sprite.Sprite):                     #障害物クラス
     def __init__(self, fn, r, xy):
         #fn:画像パス r:拡大率 xy:位置
