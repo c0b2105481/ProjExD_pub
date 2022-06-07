@@ -1,11 +1,14 @@
 import pygame as pg
 import sys
 from random import randint 
+import tkinter as tk
+
+amo = 100
 
 BULLET_LIST = [1, 2, 3]         #障害物の確率
 SCREEN = (0, 0, 600, 500)       #移動範囲（x, y) 
 RUN = True                      #実行：True 停止:False
-HP = 100                        #HPの設定
+HP = amo                        #HPの設定
 
 class Screen:
     def __init__(self, fn, wh, title): 
@@ -22,30 +25,31 @@ class Plane(pg.sprite.Sprite):            #キャラクタークラス
         # fn: 画像パス r:拡大率 xy:初期位置
         super().__init__()
         self.image = pg.image.load(fn)    #Surface
-        self.image = pg.transform.rotozoom(self.image, 0, r)
+        self.image = pg.transform.rotozoom(self.image, 0, r)  
         self.rect= self.image.get_rect()  #Rect
         self.rect.center = xy             #キャラの座標を設定
 
     def update(self, screen):             #キャラの操作
         key_states = pg.key.get_pressed() # スペースキーが押されたら
         if key_states[pg.K_SPACE]:        #ジャンプ設定
-            self.rect.move_ip(0, -1)      #スペースが押されたらmove_ipを(0, -1)
+            self.rect.move_ip(0, -2)      #スペースが押されたらmove_ipを(0, -1)
         else:                             #それ以外をmove_ip(0, +1)にする
-            self.rect.move_ip(0, 1)
+            self.rect.move_ip(0, 2)
         self.rect.clamp_ip(SCREEN)        #キャラの移動範囲
 
 
 class Bullet(pg.sprite.Sprite):                     #障害物クラス
-    def __init__(self, fn, r, xy):
+    def __init__(self, fn, r, xy, vxy):
         #fn:画像パス r:拡大率 xy:位置
         super().__init__()
         self.image = pg.image.load(fn)              #surface
         self.image = pg.transform.rotozoom(self.image, 0, r)
         self.rect = self.image.get_rect()           #rect
         self.rect.center = xy                       #障害物の位置を設定
+        self.vxy = vxy
     
     def update(self, screen):
-       self.rect.move_ip(-1, 0)                     #x-1の方向に動かし続ける
+       self.rect.move_ip(self.vxy)                     #x-1の方向に動かし続ける
 
 
 class Cloud(pg.sprite.Sprite):                                  #雲クラス
@@ -99,8 +103,8 @@ def main():                                                       #main関数
         bullet.update(screen)                                     #障害物の更新
         if randint(0, 1500) == 1:                                 #もし１だったら雲の追加
             cloud.add(Cloud("dg/cloud4.jpg", 1, (randint(900, 1000), randint(0, 500))))
-        if randint(0, 1000) in BULLET_LIST:                       #BULLET＿LISTのなかにあったら障害物を追加
-            bullet.add(Bullet("dg/b1.png", 0.25, (randint(900, 1000), randint(0, 500))))
+        if randint(0, 500) in BULLET_LIST:                       #BULLET＿LISTのなかにあったら障害物を追加
+            bullet.add(Bullet("dg/b1.png", 0.25, (randint(900, 1000), randint(0, 500)), (randint(-7,-1), randint(-2,2)))) #弾の速さと方向をランダムに変更
         if len(pg.sprite.groupcollide(bullet, plane, True, False)) != 0: #障害物と飛行機が当たったらHP-10する0になったら終了
             HP -= 20
             if HP == 0:
@@ -114,6 +118,42 @@ def main():                                                       #main関数
 
 
 if __name__ == "__main__":
+    '''
+    root = tk.Tk()
+    root.wm_withdraw()
+    def search():
+        global amo
+        amo = 30
+
+    # rootメインウィンドウの設定
+    root = tk.Tk()
+    root.title("tkinter application")
+    root.geometry("200x100")
+
+    frame = tk.Frame(root)
+    frame.pack(fill = tk.BOTH, padx=20,pady=10)
+
+    frame1 = tk.Frame(root)
+    frame1.pack(fill = tk.BOTH, padx=40,pady=30)
+
+    frame2 = tk.Frame(root)
+    frame2.pack(fill = tk.BOTH, padx=20,pady=60)
+
+    text = tk.StringVar(frame)
+    text.set("30")
+
+    text1 = tk.StringVar(frame1)
+    text1.set("60")
+
+    text2 = tk.StringVar(frame2)
+    text2.set("90")
+
+    # 各種ウィジェットの作成
+    button = tk.Button(frame, textvariable=text, command=search)
+    button = tk.Button(frame, textvariable=text1, command=search)
+    button = tk.Button(frame, textvariable=text2, command=search)
+    '''
+
     pg.init() 
     main()
     pg.quit()
