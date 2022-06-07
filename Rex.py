@@ -1,4 +1,4 @@
-from glob import glob
+
 import pygame as pg
 import sys
 from random import randint
@@ -138,4 +138,4 @@ if __name__ == "__main__":
     pg.quit()               # pygameの終了
     sys.exit()              # プログラムの終了
   
-  
+
