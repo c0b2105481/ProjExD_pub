@@ -1,7 +1,8 @@
 from glob import glob
 import pygame as pg
 import sys
-from random import randint 
+from random import randint
+import pygame.mixer
 
 BULLET_LIST = [1, 2, 3]         # 障害物の確率
 SCREEN = (0, 0, 600, 500)       # 移動範囲（x, y) 
@@ -90,12 +91,16 @@ class Hp: #Hp class
 def main():                                                       # main関数
     global BULLET_LIST, RUN, HP                                   # グローバル変数
     clock = pg.time.Clock()
-    screen = Screen("ProjExD_pub/dg/sky.jpg",(900,500),"Crash Plane")  # 背景画像、ウィンドウサイズ、タイトル
+    screen = Screen("dg/sky.jpg",(900,500),"Crash Plane")  # 背景画像、ウィンドウサイズ、タイトル
     screen.disp.blit(screen.image, (0, 0))                        # 背景画像の貼り付け
     plane = pg.sprite.Group()                                     # 飛行機の空のコンテナを作成
-    plane.add(Plane("ProjExD_pub/dg/plean3.png", 0.15, (200, 125)))           # 飛行機を画面に追加
+    plane.add(Plane("dg/plean3.png", 0.15, (200, 125)))           # 飛行機を画面に追加
     bullet = pg.sprite.Group()                                    # 障害物の空のコンテナを作成
     cloud = pg.sprite.Group()                                     # 雲の空のコンテナを作成
+
+    pygame.mixer.init(frequency = 44100)                #BGM設定　和田
+    pygame.mixer.music.load("dg/rex.mp3")               #BGMファイル　和田
+    pygame.mixer.music.play(-1)                         #BGMをループ再生
 
 
     while RUN:
@@ -112,9 +117,9 @@ def main():                                                       # main関数
         plane.update()                                            # 飛行機の更新
         bullet.update()                                           # 障害物の更新
         if randint(0, 1500) == 1:                                 # 与えられた乱数がもし１だったら雲を追加
-            cloud.add(Cloud("ProjExD_pub/dg/cloud4.jpg", 1, (randint(900, 1000), randint(0, 500))))
+            cloud.add(Cloud("dg/cloud4.jpg", 1, (randint(900, 1000), randint(0, 500))))
         if randint(0, BULLET) in BULLET_LIST:                       # 与えられた乱数がBULLET＿LISTのなかにあったら障害物を追加      武田
-            bullet.add(Bullet("ProjExD_pub/dg/b1.png", 0.25, (900, randint(0, 500)), (randint(-7, -1), randint(-1, 1)))) #弾の速度、方向をランダムに設定　髙山
+            bullet.add(Bullet("dg/b1.png", 0.25, (900, randint(0, 500)), (randint(-7, -1), randint(-1, 1)))) #弾の速度、方向をランダムに設定　髙山
         if len(pg.sprite.groupcollide(bullet, plane, True, False)) != 0: # 障害物と飛行機が当たったらHPを20減らし、HPが0になったら終了
             HP -= 20
             if HP == 0:
@@ -132,4 +137,5 @@ if __name__ == "__main__":
     main()                  # main関数の実行
     pg.quit()               # pygameの終了
     sys.exit()              # プログラムの終了
+  
   
