@@ -89,7 +89,7 @@ class Hp: #Hp class
 def main():                                                       # main関数
     global BULLET_LIST, RUN, HP                                   # グローバル変数
     clock = pg.time.Clock()
-    screen = Screen("ProjExD_pub/dg/sky.jpg",(900,500),"避けろ！！こうかとん")  # 背景画像、ウィンドウサイズ、タイトル
+    screen = Screen("ProjExD_pub/dg/sky.jpg",(900,500),"Crash Plane")  # 背景画像、ウィンドウサイズ、タイトル
     screen.disp.blit(screen.image, (0, 0))                        # 背景画像の貼り付け
     plane = pg.sprite.Group()                                     # 飛行機の空のコンテナを作成
     plane.add(Plane("ProjExD_pub/dg/plean3.png", 0.15, (200, 125)))           # 飛行機を画面に追加
