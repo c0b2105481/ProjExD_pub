@@ -1,6 +1,6 @@
-from glob import glob
 import pygame as pg
 import sys
+from pygame import mixer
 from random import randint 
 
 BULLET_LIST = [1, 2, 3]         # 障害物の確率
