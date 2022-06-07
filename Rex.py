@@ -1,8 +1,7 @@
-
 import pygame as pg
 import sys
 from random import randint
-import pygame.mixer
+# import pygame.mixer
 
 BULLET_LIST = [1, 2, 3]         # 障害物の確率
 SCREEN = (0, 0, 600, 500)       # 移動範囲（x, y) 
@@ -36,7 +35,7 @@ class Plane(pg.sprite.Sprite):            # キャラクタークラス
         else:                             # それ以外をmove_ip(0, +1)にする
             self.rect.move_ip(0, 1)
         self.rect.clamp_ip(SCREEN)        # キャラの移動範囲
-
+        
 
 class Bullet(pg.sprite.Sprite):                     # 障害物クラス
     def __init__(self, fn, r, xy, vxy):
@@ -98,9 +97,9 @@ def main():                                                       # main関数
     bullet = pg.sprite.Group()                                    # 障害物の空のコンテナを作成
     cloud = pg.sprite.Group()                                     # 雲の空のコンテナを作成
 
-    pygame.mixer.init(frequency = 44100)                #BGM設定　和田
-    pygame.mixer.music.load("dg/rex.mp3")               #BGMファイル　和田
-    pygame.mixer.music.play(-1)                         #BGMをループ再生
+    pg.mixer.init(frequency = 44100)                #BGM設定　和田
+    pg.mixer.music.load("dg/rex.mp3")               #BGMファイル　和田
+    pg.mixer.music.play(-1)                         #BGMをループ再生
 
 
     while RUN:
